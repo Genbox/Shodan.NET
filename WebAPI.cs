@@ -183,13 +183,14 @@ namespace Shodan
             CultureInfo provider = CultureInfo.InvariantCulture;
 
             // Extract the info out of the host dictionary and put it in the local properties
-            Id = int.Parse(result["ip"].ToString());
-            Author = result["author"].ToString();
+            Id = int.Parse(result["id"].ToString());
+            Author = result["author"] as string;
             Date = DateTime.ParseExact((string)result["date"], "dd.MM.yyyy", provider);
-            Description = result["description"].ToString();
-            Platform = result["platform"].ToString();
+            Description = result["description"] as string;
+            Platform = result["platform"] as string;
             Port = int.Parse(result["port"].ToString());
-            Type = result["type"].ToString();
+            Type = result["type"] as string;
+            CVE = result["type"] as string;
         }
 
         public int Id { get; set; }
@@ -199,6 +200,7 @@ namespace Shodan
         public string Platform { get; set; }
         public int Port { get; set; }
         public string Type { get; set; }
+        public string CVE { get; set; }
     }
 
     public class ServiceBanner
@@ -246,7 +248,7 @@ namespace Shodan
         ///   Check whether there are valid coordinates available for this location.
         /// </summary>
         /// <returns> true if there are latitude/ longitude coordinates, false otherwise. </returns>
-        public Boolean HasCoordinates()
+        public bool HasCoordinates()
         {
             if (Latitude != 0 && Longitude != 0)
                 return true;
@@ -307,22 +309,30 @@ namespace Shodan
     {
         public DataResponse(Dictionary<string, object> data)
         {
-            Data = data["data"].ToString();
-            ContentType = data["content-type"].ToString();
-            Filename = data["filename"].ToString();
+            Data = data["data"] as string;
+            ContentType = data["content-type"] as string;
+            Filename = data["filename"] as string;
         }
 
         public string Data { get; set; }
         public string ContentType { get; set; }
         public string Filename { get; set; }
+
+        public void WriteToFile(string path)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            File.WriteAllText(path, Data);
+        }
     }
 
     public class MSFModule
     {
         public MSFModule(Dictionary<string, object> data)
         {
-            Alias = data["alias"].ToString();
-            Arch = data["arch"].ToString();
+            Alias = data["alias"] as string;
+            Arch = data["arch"] as string;
 
             ArrayList authors = data["authors"] as ArrayList;
             if (authors != null)
@@ -337,14 +347,20 @@ namespace Shodan
                 Platforms = new List<string>(platforms.Cast<string>());
 
             Privileged = bool.Parse(data["privileged"].ToString());
-            Rank = data["rank"].ToString();
+            Rank = data["rank"] as string;
 
             ArrayList references = data["references"] as ArrayList;
             if (references != null)
-                References = new List<string>(references.Cast<string>());
+            {
+                References = new List<KeyValuePair<string, string>>();
+                foreach (ArrayList reference in references)
+                {
+                    References.Add(new KeyValuePair<string, string>(reference[0].ToString(), reference[1].ToString()));
+                }
+            }
 
-            Type = data["type"].ToString();
-            Version = data["version"].ToString();
+            Type = data["type"] as string;
+            Version = data["version"] as string;
         }
 
         public string Alias { get; set; }
@@ -356,7 +372,7 @@ namespace Shodan
         public List<string> Platforms { get; set; }
         public bool Privileged { get; set; }
         public string Rank { get; set; }
-        public List<string> References { get; set; }
+        public List<KeyValuePair<string, string>> References { get; set; }
         public string Type { get; set; }
         public string Version { get; set; }
     }
