@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Script.Serialization;
 using System.Globalization;
 
-namespace Shodan
+namespace ShodanNET
 {
     public class Shodan
     {
