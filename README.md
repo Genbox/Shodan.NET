@@ -1,6 +1,6 @@
 ﻿## Introduction
 
-The Shodan.NET class library provides a WebAPI class to Search() and GetHost()-information. It currently relies .NET 4.0 and help is welcome for making it compatible with earlier .NET releases.
+The Shodan.NET class library build in .net 4.0 C#, provides a class to search, getting host information, exploits from ExploitDB and more.
 
 ## Usage
 
@@ -8,53 +8,53 @@ Before you can use the API, you need to have an API key.
 
 [Get your API key here](http://www.shodanhq.com/api_doc)
 
-Setup the SHODAN WebAPI:
+Setup the SHODAN client:
 ```csharp
-	using Shodan;
-	
-	WebAPI api = new WebAPI("YOUR KEY");
+using ShodanNET;
+
+Shodan shodan = new Shodan("YOUR API KEY");
 ```
 
 Print a list of cisco-ios devices:
 ```csharp
-	SearchResult results = api.Search("cisco-ios");
+List<Host> hosts = shodan.Search("cisco-ios");
 
-    foreach (Host h in results.Hosts)
-    {
-        Console.WriteLine(h.IP.ToString());
-    }
+foreach (Host h in hosts)
+{
+	Console.WriteLine(h.IP.ToString());
+}
 ```
 
 Get all the information SHODAN has on the IP 217.140.75.46:
 ```csharp
-	Host host = api.GetHost("217.140.75.46");
-	Console.WriteLine(host.IP.ToString());
+Host host = shodan.GetHost("217.140.75.46");
+Console.WriteLine(host.IP.ToString());
 ```
 
 Search for exploits on ExploitDB and modules on MSF:
 ```csharp
-	List<Exploit> exploits = api.SearchExploits("Microsoft Windows XP");
+List<Exploit> exploits = shodan.SearchExploits("Microsoft Windows XP");
 
-	foreach (Exploit exploit in exploits)
-	{
-		Console.WriteLine(exploit.Description);
-	}
-	
-	List<MSFModule> modules = api.SearchMSFModules("Oracle");
+foreach (Exploit exploit in exploits)
+{
+	Console.WriteLine(exploit.Description);
+}
 
-	foreach (MSFModule msfModule in modules)
-	{
-		Console.WriteLine(msfModule.Name);
-	}
+List<MSFModule> modules = shodan.SearchMSFModules("Oracle");
+
+foreach (MSFModule msfModule in modules)
+{
+	Console.WriteLine(msfModule.Name);
+}
 ```
 
 Download exploit from ExploitDB and modules from MSF:
 ```csharp
-	DataResponse exploit = api.DownloadExploit(17133);
-	Console.WriteLine(exploit.Filename);
+DataResponse exploitData = shodan.DownloadExploit(17133);
+Console.WriteLine(exploitData.Filename);
 
-	//Note that we also write the file to disk
-	DataResponse module = api.DownloadMSFModule("exploit/windows/browser/ms06_055_vml_method");
-	module.WriteToFile("C:\\" + module.Filename);
-	Console.WriteLine(module.Filename);
+//Note that we also write the file to disk
+DataResponse module = shodan.DownloadMSFModule("exploit/windows/browser/ms06_055_vml_method");
+module.WriteToFile("C:\\" + module.Filename);
+Console.WriteLine(module.Filename);
 ```
