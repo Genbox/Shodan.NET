@@ -1,22 +1,23 @@
-﻿## Introduction
+﻿# Shodan.NET - A full implementation of the ShodanHQ.com API
 
 The Shodan.NET class library build in .net 4.0 C#, provides a class to search, getting host information, exploits from ExploitDB and more.
 
-## Usage
+### Features
+
+* Search hosts based on a string
+* Get detailed information, including service banners from a single IP
+* Search and download exploits from ExploitDB and modules from the MSF (Metasploit Framework)
+
+### Usage
 
 Before you can use the API, you need to have an API key.
 
 [Get your API key here](http://www.shodanhq.com/api_doc)
 
-Setup the SHODAN client:
-```csharp
-using ShodanNET;
-
-Shodan shodan = new Shodan("YOUR API KEY");
-```
-
+###Examples
 Print a list of cisco-ios devices:
 ```csharp
+Shodan shodan = new Shodan("YOUR API KEY");
 List<Host> hosts = shodan.Search("cisco-ios");
 
 foreach (Host h in hosts)
@@ -58,3 +59,5 @@ DataResponse module = shodan.DownloadMSFModule("exploit/windows/browser/ms06_055
 module.WriteToFile("C:\\" + module.Filename);
 Console.WriteLine(module.Filename);
 ```
+
+See the Shodan.NET Client inside the project to try out the API.
