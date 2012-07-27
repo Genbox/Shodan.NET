@@ -19,7 +19,12 @@ namespace ShodanNET.Objects
         public void WriteToFile(string path)
         {
             if (!Directory.Exists(path))
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
+            {
+                string directoryName = Path.GetDirectoryName(path);
+
+                if (directoryName != null)
+                    Directory.CreateDirectory(directoryName);
+            }
 
             File.WriteAllText(path, Data);
         }

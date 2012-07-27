@@ -40,14 +40,15 @@ namespace ShodanNETClient
                 Console.WriteLine(msfModule.Name);
             }
 
-            //Download exploit from ExploitDB and modules from MSF
-            DataResponse exploitData = shodan.DownloadExploit(17133);
-            Console.WriteLine(exploitData.Filename);
+            //Download exploit from ExploitDB and modules from MSF - Currently disabled by ShodanHQ
+            //DataResponse exploitData = shodan.DownloadExploit(exploits[0].Id); 
+            //Console.WriteLine(exploitData.Filename);
+
+            //DataResponse module = shodan.DownloadMSFModule("exploit/windows/browser/ms06_055_vml_method");
 
             //Note that we also write the file to disk
-            DataResponse module = shodan.DownloadMSFModule("exploit/windows/browser/ms06_055_vml_method");
-            module.WriteToFile("C:\\" + module.Filename);
-            Console.WriteLine(module.Filename);
+            //module.WriteToFile("C:\\" + module.Filename);
+            //Console.WriteLine(module.Filename);
 
             Console.WriteLine("Press a key to continue.");
             Console.ReadLine();

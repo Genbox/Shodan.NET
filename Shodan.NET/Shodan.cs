@@ -155,6 +155,9 @@ namespace ShodanNET
             // Send the request
             Stream response = _webClient.OpenRead(BaseUrl + apiFunc + strArgs + "&key=" + _apiKey);
 
+            if (response == null)
+                return null;
+
             // Read the response into a string
             StreamReader reader = new StreamReader(response);
             string data = reader.ReadToEnd();
