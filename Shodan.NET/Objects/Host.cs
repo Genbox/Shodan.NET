@@ -16,6 +16,8 @@ namespace ShodanNET.Objects
             // Extract the info out of the host dictionary and put it in the local properties
             IP = IPAddress.Parse(host["ip"].ToString());
 
+            OS = host["os"].ToString();
+
             // Hostnames
             ArrayList tmp = (ArrayList)host["hostnames"];
             Hostnames = tmp.Cast<string>().ToList();
@@ -48,6 +50,7 @@ namespace ShodanNET.Objects
         public IPAddress IP { get; private set; }
         public List<string> Hostnames { get; private set; }
         public HostLocation Location { get; private set; }
+        public string OS { get; private set; }
 
         /// <summary>
         /// Used to differentiate between hosts from Search() results and direct GetHost() queries

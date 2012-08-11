@@ -40,5 +40,10 @@ namespace ShodanNET.Objects
 
             return false;
         }
+
+        public override string ToString()
+        {
+            return City + "," + CountryName + " at " + Latitude + "," + Longitude;
+        }
     }
 }
