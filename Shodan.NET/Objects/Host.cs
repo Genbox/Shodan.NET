@@ -16,7 +16,10 @@ namespace ShodanNET.Objects
             // Extract the info out of the host dictionary and put it in the local properties
             IP = IPAddress.Parse(host["ip"].ToString());
 
-            OS = host["os"].ToString();
+            if (host.ContainsKey("os"))
+                OS = host["os"].ToString();
+            else
+                OS = "Unknown";
 
             // Hostnames
             ArrayList tmp = (ArrayList)host["hostnames"];

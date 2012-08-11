@@ -43,7 +43,18 @@ namespace ShodanNET.Objects
 
         public override string ToString()
         {
-            return City + "," + CountryName + " at " + Latitude + "," + Longitude;
+            string output = string.Empty;
+
+            if (!string.IsNullOrEmpty(City))
+                output += City;
+
+            if (!string.IsNullOrEmpty(CountryName))
+                output += ", " + CountryName + " at ";
+
+            if (HasCoordinates())
+                output += Latitude + "," + Longitude;
+
+            return output;
         }
     }
 }
