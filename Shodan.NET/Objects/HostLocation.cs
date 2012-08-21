@@ -48,11 +48,14 @@ namespace ShodanNET.Objects
             if (!string.IsNullOrEmpty(City))
                 output += City;
 
+            if (!string.IsNullOrEmpty(City) && !string.IsNullOrEmpty(CountryName))
+                output += ", ";
+
             if (!string.IsNullOrEmpty(CountryName))
-                output += ", " + CountryName + " at ";
+                output += CountryName;
 
             if (HasCoordinates())
-                output += Latitude + "," + Longitude;
+                output += " at " + Latitude + "," + Longitude;
 
             return output;
         }

@@ -55,10 +55,13 @@ namespace ShodanNET
         /// </summary>
         /// <param name="query">The search query for Shodan; identical syntax to the website. </param>
         /// <param name="offset">The starting position for the search cursor.</param>
-        /// <param name="limit">The number of hosts to return per search query.</param>
+        /// <param name="limit">The number of hosts to return per search query. Must be a multiple of 100.</param>
         /// <returns> A SearchResult object that contains a List of Hosts matching the query and the total number of results found. </returns>
         public List<Host> Search(string query, int offset = 0, int limit = 100)
         {
+            if (limit % 100 != 0)
+                throw new ArgumentException("Limit must be a multiple of 100.", "limit");
+
             Dictionary<string, string> args = new Dictionary<string, string>();
             args["q"] = query;
             args["o"] = offset.ToString();
